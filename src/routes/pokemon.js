@@ -1,9 +1,23 @@
-const express = require('express')
+import express, { Request, Response } from "express";
+import * as pokemonController from "../controllers/user";
 
+const pokemonRouter = require('express')
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    res.send('Birds home page')
-  })
+pokemonRouter.get('/:id', (req, res) => {
+  pokemonController.getOnePokemon(req, res)
+});
 
-module.exports = router
+pokemonRouter.post('/', (req, res) => {
+  pokemonController.createPokemon(req, res)
+});
+
+pokemonRouter.put('/', (req, res) => {
+  pokemonController.updatePokemon(req, res)
+});
+
+pokemonRouter.delete('/:id', (req, res) => {
+  pokemonController.deletePokemon(req, res)
+});
+
+export { pokemonRouter };
