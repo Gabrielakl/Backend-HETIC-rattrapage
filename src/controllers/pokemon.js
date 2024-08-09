@@ -28,7 +28,7 @@ const getOnePokemon = async (req, res) => {
  */
 const getAllPokemonsFromUser = async (req, res) => {
     try {
-      const pokemon = await pokemonRepository.getAllPokemonsFromUser(req.params.id);
+      const pokemon = await pokemonRepository.getAllPokemonsFromUser(req.user.id);
       res.status(HTTP_STATUS_CODE.OK).json(pokemon);
     } catch (error) {
       res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ message: "Pokemon not found" });

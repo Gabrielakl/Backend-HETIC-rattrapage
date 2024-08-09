@@ -12,7 +12,7 @@ import * as userRepository from "../repositories/user.js";
  */
 const getOneUser = async (req, res) => {
     try {
-      const user = await userRepository.getUserById(req.params.id);
+      const user = await userRepository.getUserById(req.user.id);
       res.status(HTTP_STATUS_CODE.OK).json(user);
     } catch (error) {
       res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ message: "User not found" });
@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
  */
 const updateUser = async (req, res) => {
     try {
-      const user = await userRepository.updateUser(req.params.id, req.body);
+      const user = await userRepository.updateUser(req.user.id, req.body);
       res.status(HTTP_STATUS_CODE.OK).json(user);
     } catch (error) {
       res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: "User not updated" });
@@ -74,7 +74,7 @@ const updateUser = async (req, res) => {
  */
 const deleteUser = async (req, res) => {
     try {
-      await userRepository.deleteUser(req.params.id);
+      await userRepository.deleteUser(req.user.id);
       res.status(HTTP_STATUS_CODE.NO_CONTENT).json();
     } catch (error) {
       res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: "User not deleted" });
