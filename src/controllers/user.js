@@ -1,4 +1,5 @@
 import { HTTP_STATUS_CODE } from "../constants/http.js";
+import * as authenticationHelpers from "../helpers/authentication.js";
 import * as userRepository from "../repositories/user.js";
 
 /**
@@ -30,7 +31,11 @@ const getOneUser = async (req, res) => {
  */
 const createUser = async (req, res) => {
     try {
-      const user = await userRepository.addUser(req.body);
+      const user = await userRepository.addUser({
+        "name": req.body.name,
+        "password": await authenticationHelpers.hashPassword(req.body.password),
+        "email":  req.body.email,
+      });
       res.status(HTTP_STATUS_CODE.CREATED).json(user);
     } catch (error) {
       console.log(error)
