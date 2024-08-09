@@ -8,7 +8,7 @@ pokemonRouter.get('/:id', [jwtVerifyToken], (req, res) => {
   pokemonController.getOnePokemon(req, res)
 });
 
-pokemonRouter.get('/user/:id', [jwtVerifyToken], (req, res) => {
+pokemonRouter.get('/', [jwtVerifyToken], (req, res) => {
   pokemonController.getAllPokemonsFromUser(req, res)
 });
 

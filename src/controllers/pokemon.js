@@ -48,9 +48,13 @@ const getAllPokemonsFromUser = async (req, res) => {
  */
 const createPokemon = async (req, res) => {
     try {
-      const pokemon = await userRepository.addPokemon(req.body);
+      const pokemon = await pokemonRepository.addPokemon({
+        ...req.body,
+        userId: req.user.id,
+      });
       res.status(HTTP_STATUS_CODE.CREATED).json(pokemon);
     } catch (error) {
+      console.log(error)
       res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: "Pokemon not created" });
     }
 };
