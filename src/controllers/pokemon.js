@@ -78,7 +78,6 @@ const createPokemon = async (req, res) => {
  */
 const updatePokemon = async (req, res) => {
     try {
-      console.log(req.params.id)
       const pokemon = await pokemonRepository.updatePokemon(req.params.id, req.body);
       res.status(HTTP_STATUS_CODE.OK).json(pokemon);
     } catch (error) {
