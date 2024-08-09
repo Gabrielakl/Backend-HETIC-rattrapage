@@ -25,6 +25,7 @@ const updateUser = async (id, user) => {
         const updatedUser = await prisma.user.update({ where: { id }, data: user });
         return updatedUser;
     } catch (error) {
+        console.log(error);
         throw new Error(error);
     }
 }
@@ -38,7 +39,7 @@ const deleteUser = async (id) => {
     }
 }
 
-export default {
+export {
     getUser,
     addUser,
     updateUser,

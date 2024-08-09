@@ -11,6 +11,15 @@ const getPokemon = async (id) => {
     }
 }
 
+const getAllPokemonsFromUser = async (userId) => {
+    try {
+        const pokemons = await prisma.pokemon.findMany({ where: { userId } });
+        return pokemons;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 const addPokemon = async (pokemon) => {
     try {
         const newPokemon = await prisma.pokemon.create({ data: pokemon });
@@ -38,9 +47,10 @@ const deletePokemon = async (id) => {
     }
 }
 
-export default {
+export {
     getPokemon,
+    getAllPokemonsFromUser,
     addPokemon,
     updatePokemon,
-    deletePokemon
+    deletePokemon,
 }

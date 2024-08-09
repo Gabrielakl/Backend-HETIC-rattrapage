@@ -1,9 +1,7 @@
-import express, { Request, Response } from "express";
-import * as userController from "../controllers/user";
+import express from "express";
+import * as userController from "../controllers/user.js";
 
-const userRouter = require('express')
-
-const router = express.Router()
+const userRouter = express.Router();
 
 userRouter.get('/:id', (req, res) => {
   userController.getOneUser(req, res)
@@ -13,7 +11,7 @@ userRouter.post('/', (req, res) => {
   userController.createUser(req, res)
 });
 
-userRouter.put('/', (req, res) => {
+userRouter.put('/:id', (req, res) => {
   userController.updateUser(req, res)
 });
 
