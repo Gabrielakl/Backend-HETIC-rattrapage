@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const hashPassword = async (password) => {
     const saltRounds = 10;
@@ -6,17 +7,24 @@ const hashPassword = async (password) => {
     return hashedPassword;
 }
 
-const verifyPassword = (inputPassword, storedPassword) => {
-    const res = bcrypt.compare(inputPassword, storedPassword, (err, result) => {
-        if (err) {
-            return false;
-        }
-        return result;
-    });
+const verifyPassword = async (inputPassword, storedPassword) => {
+    const res = await bcrypt.compare(inputPassword, storedPassword);
     return res;
 };
 
+const generateToken = (user) => {
+    const token = jwt.sign({
+        id: user.id,
+        email: user.email
+    }, process.env.JWT_SECRET, {
+        expiresIn: "1d"
+    });
+
+    return token;
+}
+
 export {
     hashPassword,
-    verifyPassword
+    verifyPassword,
+    generateToken
 }

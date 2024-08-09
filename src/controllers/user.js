@@ -12,7 +12,7 @@ import * as userRepository from "../repositories/user.js";
  */
 const getOneUser = async (req, res) => {
     try {
-      const user = await userRepository.getUser(req.params.id);
+      const user = await userRepository.getUserById(req.params.id);
       res.status(HTTP_STATUS_CODE.OK).json(user);
     } catch (error) {
       res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ message: "User not found" });
