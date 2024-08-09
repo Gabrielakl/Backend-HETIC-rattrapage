@@ -47,6 +47,12 @@ const getAllPokemonsFromUser = async (req, res) => {
  * @returns {Promise<void>}
  */
 const createPokemon = async (req, res) => {
+    const userPokemons = await pokemonRepository.getAllPokemonsFromUser(req.user.id);
+
+    if (userPokemons.length >= 4) {
+      return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: "You already have 3 pokemons" });
+    };
+
     try {
       const pokemon = await pokemonRepository.addPokemon({
         ...req.body,
@@ -72,9 +78,11 @@ const createPokemon = async (req, res) => {
  */
 const updatePokemon = async (req, res) => {
     try {
+      console.log(req.params.id)
       const pokemon = await pokemonRepository.updatePokemon(req.params.id, req.body);
       res.status(HTTP_STATUS_CODE.OK).json(pokemon);
     } catch (error) {
+      console.log(error)
       res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ message: "Pokemon not updated" });
     }
 };

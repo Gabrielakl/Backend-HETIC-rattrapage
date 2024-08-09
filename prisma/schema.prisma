@@ -41,6 +41,7 @@ model Technics {
   created_at      DateTime  @default(now())
   attack          Int
   type            String
+  precision       Int
 
   pokemonId       String
   pokemon         Pokemon   @relation(fields: [pokemonId], references: [id])

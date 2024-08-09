@@ -13,7 +13,10 @@ const getPokemon = async (id) => {
 
 const getAllPokemonsFromUser = async (userId) => {
     try {
-        const pokemons = await prisma.pokemon.findMany({ where: { userId } });
+        const pokemons = await prisma.pokemon.findMany({ 
+            where: { userId }, 
+            include: { technics: true } 
+        });
         return pokemons;
     } catch (error) {
         throw new Error(error);
@@ -29,10 +32,45 @@ const addPokemon = async (pokemon) => {
     }
 };
 
-const updatePokemon = async (id, pokemon) => {
+const updatePokemon = async (id, technics) => {
     try {
-        const updatedPokemon = await prisma.pokemon.update({ where: { id }, data: pokemon });
-        return updatedPokemon;
+        const pokemon = await prisma.pokemon.findUnique({ 
+            where: { id },
+            include: { technics: true }
+        });
+
+        if(!pokemon) {
+            throw new Error("Pokemon not found");
+        };
+
+        let technicsToAdd = [];
+
+        for(const technic of pokemon.technics) {
+            if(!technics.find(t => t.id === technic.id)) {
+                await prisma.technics.delete({ where: { id: technic.id } });
+            } 
+            if(technics.find(t => t.id === technic.id)) {
+                continue;
+            }
+        }
+
+        for(const technic of technics) {
+            if(!pokemon.technics.find(t => t.id === technic.id)) {
+                technicsToAdd.push(technic);
+            }
+        }
+
+
+        const result = []
+        for(const technic of technicsToAdd) {
+            const createdTechnic = await prisma.technics.create({ data: {
+                ...technic,
+                pokemonId: id
+            } });
+            result.push(createdTechnic);
+        }
+
+        return result;
     } catch (error) {
         throw new Error(error);
     }
